@@ -1,16 +1,22 @@
-int rows=100,columns=70;
+int rows=70,columns=70;
 int[][]grid=new int[rows][columns];
 int[][]nextG= new int[rows][columns];
 void setup(){
   //Initial matrix
-  size(1000,700);
+  size(700,700);
   Array2D();
 }
 
 void draw(){
+//Delimitation
+  for(int i=0;i<rows;i++){grid[i][0]=0;}
+  for(int j=0;j<columns;j++){grid[0][j]=0;}
+  for(int i=0;i<rows;i++){grid[i][columns-1]=0;}
+  for(int j=0;j<columns;j++){grid[rows-1][j]=0;}
+//--------------------------------------
   nextG=grid;
   background(0);
-  frameRate(30);
+  frameRate(20);
 //--------------------------------------
 //Showing the space
   for(int i=0;i<rows;i++){
@@ -24,15 +30,8 @@ void draw(){
       rect(x,y,10,10);
     }
   }
-//---------------------------------
-//Delimitation
-  for(int i=0;i<rows;i++){grid[i][0]=0;}
-  for(int j=0;j<columns;j++){grid[0][j]=0;}
-  for(int i=0;i<rows;i++){grid[i][columns-1]=0;}
-  for(int j=0;j<columns;j++){grid[rows-1][j]=0;}
 //--------------------------------------
-//Next Gen
-//Count of live neighbours-----
+//Count of living neighbours
   for(int i=0;i<rows;i++){
     for (int j=0;j<columns;j++){
       //If its not an edge:
@@ -47,16 +46,16 @@ void draw(){
         sum+=grid[i+1][j];
         sum+=grid[i+1][j+1];
         
-        if (grid[i][j]==1 && sum<2){
+        if ((grid[i][j]==1) && (sum<2)){
           nextG[i][j]=0; //The alive cell dies if there are less than 2 neighbours.
         }
-        if (grid[i][j]==1 && sum>3){
+        if ((grid[i][j]==1) && (sum>3)){
           nextG[i][j]=0;//The alive cell dies if there are more than 3 neighbours.
         }
-        if (grid[i][j]==1 && (sum==3 && sum==2) ){
+        if ((grid[i][j]==1) && (sum==3 || sum==2)){
           nextG[i][j]=1;//The alive cell stays alive with 2 or 3 neighbours.
         }
-        if (grid[i][j]==0 && sum==3){
+        if ((grid[i][j]==0) && (sum==3)){
           nextG[i][j]=1;//The dead cell lives if has 3 neighbours.
         }
       }
